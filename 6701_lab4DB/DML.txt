@@ -1,0 +1,25 @@
+SELECT customer_name FROM customer WHERE customer_name LIKE 'Ma%'
+
+SELECT quantity,(quantity*item.unit_price) FROM order_item INNER JOIN item ON order_item.item_id=item.item_id   
+
+SELECT order_id FROM (shipment 
+   INNER JOIN warehouse ON shipment.warehouse_id=warehouse.warehouse_id AND warehouse.warehouse_city="Arica")
+
+
+SELECT (order_item.quantity*item.unit_price) FROM (
+    (order_item INNER JOIN shipment ON shipment.warehouse_id='8' 
+    AND order_item.order_id =shipment.order_id
+    ) 
+INNER JOIN item ON order_item.item_id=item.item_id)
+
+
+SELECT warehouse.warehouse_id,warehouse.warehouse_city,COUNT(shipment.order_id) FROM warehouse 
+LEFT JOIN shipment ON warehouse.warehouse_id=shipment.warehouse_id GROUP BY warehouse_id
+
+SELECT customer.customer_name, COUNT(order.order_id) FROM customer  LEFT JOIN 'order' GROUP BY customer.customer_id
+
+
+SELECT item.item_id, COUNT(order_item.item_id)
+FROM item LEFT  JOIN order_item ON order_item.item_id = item.item_id
+WHERE order_item.item_id IS NULL
+GROUP BY item.item_id;
